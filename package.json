@@ -1,0 +1,34 @@
+{
+  "name": "weathersync-dashboard",
+  "version": "1.0.0",
+  "description": "A modern, accessible weather application with ensemble forecasting, hyperlocal observations, and government alerts",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "serve": "python -m http.server 8000"
+  },
+  "keywords": [
+    "weather",
+    "forecast",
+    "accessibility",
+    "responsive",
+    "glassmorphism",
+    "neumorphism",
+    "vanilla-js",
+    "ensemble-forecasting"
+  ],
+  "author": "WeatherSync Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/weathersync-dashboard.git"
+  },
+  "homepage": "https://yourusername.github.io/weathersync-dashboard",
+  "bugs": {
+    "url": "https://github.com/yourusername/weathersync-dashboard/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

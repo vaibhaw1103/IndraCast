@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern weather app with ensemble forecasting, hyperlocal reports, and government alerts">
+    <title>WeatherSync - Advanced Weather Dashboard</title>
+    
+    <!-- Preconnect to external APIs for better performance -->
+    <link rel="preconnect" href="https://api.openweathermap.org">
+    <link rel="preconnect" href="https://api.weatherbit.io">
+    <link rel="preconnect" href="https://api.open-meteo.com">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Favicon and PWA icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛅</text></svg>">
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header with search and settings -->
+    <header class="header glass-panel">
+        <div class="container">
+            <h1 class="logo">
+                <span class="logo-icon" aria-hidden="true">⛅</span>
+                WeatherSync
+            </h1>
+            
+            <!-- Location search -->
+            <div class="search-container">
+                <form class="search-form" role="search" aria-label="Search for location">
+                    <input 
+                        type="search" 
+                        id="location-search" 
+                        class="search-input neumorphic-input"
+                        placeholder="Search city or location..."
+                        aria-label="Enter city or location to search"
+                        autocomplete="off"
+                    >
+                    <button type="submit" class="search-btn neumorphic-btn" aria-label="Search location">
+                        <span aria-hidden="true">🔍</span>
+                    </button>
+                </form>
+                <button class="location-btn neumorphic-btn" aria-label="Use current location" title="Use current location">
+                    <span aria-hidden="true">📍</span>
+                </button>
+            </div>
+            
+            <!-- Settings and accessibility controls -->
+            <div class="header-controls">
+                <button class="dark-mode-toggle neumorphic-btn" aria-label="Toggle dark mode" title="Dark mode">
+                    <span aria-hidden="true">🌙</span>
+                </button>
+                <button class="contrast-toggle neumorphic-btn" aria-label="Toggle high contrast mode" title="High contrast">
+                    <span aria-hidden="true">🎨</span>
+                </button>
+                <button class="settings-btn neumorphic-btn" aria-label="Open settings" title="Settings">
+                    <span aria-hidden="true">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content area -->
+    <main id="main-content" class="main-content">
+        <div class="container">
+            
+            <!-- Government alerts banner -->
+            <section class="alerts-banner" id="alerts-banner" role="alert" aria-live="polite" style="display: none;">
+                <div class="alert-content glass-panel alert-critical">
+                    <h2 class="alert-title">Weather Alert</h2>
+                    <div class="alert-messages" id="alert-messages"></div>
+                    <button class="alert-close" aria-label="Close alert">&times;</button>
+                </div>
+            </section>
+
+            <!-- Current location and last updated -->
+            <section class="location-info glass-panel">
+                <h2 class="current-location" id="current-location">Detecting location...</h2>
+                <p class="last-updated" id="last-updated">Last updated: Never</p>
+                <button class="refresh-btn neumorphic-btn" aria-label="Refresh weather data" title="Refresh data">
+                    <span aria-hidden="true">🔄</span>
+                </button>
+            </section>
+
+            <!-- Bento-style grid layout for weather cards -->
+            <div class="weather-grid">
+                
+                <!-- Current weather - main card -->
+                <section class="weather-card current-weather glass-panel" aria-labelledby="current-weather-title">
+                    <h2 id="current-weather-title" class="card-title">Current Weather</h2>
+                    <div class="current-weather-content">
+                        <div class="temperature-display">
+                            <span class="temperature" id="current-temp">--°</span>
+                            <span class="feels-like" id="feels-like">Feels like --°</span>
+                        </div>
+                        <div class="weather-icon-container">
+                            <div class="weather-icon" id="weather-icon" aria-hidden="true">⛅</div>
+                            <p class="weather-description" id="weather-description">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="weather-details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Humidity</span>
+                            <span class="detail-value" id="humidity">--%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Wind</span>
+                            <span class="detail-value" id="wind">-- km/h</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">UV Index</span>
+                            <span class="detail-value" id="uv-index">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Pressure</span>
+                            <span class="detail-value" id="pressure">-- hPa</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Visibility</span>
+                            <span class="detail-value" id="visibility">-- km</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Rain Chance</span>
+                            <span class="detail-value" id="rain-chance">--%</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Air Quality Index -->
+                <section class="weather-card aqi-card glass-panel" aria-labelledby="aqi-title">
+                    <h2 id="aqi-title" class="card-title">Air Quality</h2>
+                    <div class="aqi-content">
+                        <div class="aqi-value" id="aqi-value">--</div>
+                        <div class="aqi-label" id="aqi-label">Loading...</div>
+                        <div class="aqi-advice" id="aqi-advice">Fetching air quality data...</div>
+                    </div>
+                </section>
+
+                <!-- Health & Wellness Tips -->
+                <section class="weather-card health-card glass-panel" aria-labelledby="health-title">
+                    <h2 id="health-title" class="card-title">Health & Wellness</h2>
+                    <div class="health-tips" id="health-tips">
+                        <p>Loading health recommendations...</p>
+                    </div>
+                </section>
+
+                <!-- Hourly Forecast -->
+                <section class="weather-card hourly-forecast glass-panel" aria-labelledby="hourly-title">
+                    <h2 id="hourly-title" class="card-title">24-Hour Forecast</h2>
+                    <div class="hourly-scroll" role="region" aria-label="Hourly weather forecast" tabindex="0">
+                        <div class="hourly-items" id="hourly-items">
+                            <!-- Hourly items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7-Day Forecast -->
+                <section class="weather-card daily-forecast glass-panel" aria-labelledby="daily-title">
+                    <h2 id="daily-title" class="card-title">7-Day Forecast</h2>
+                    <div class="daily-items" id="daily-items">
+                        <!-- Daily items will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Government Alerts Card -->
+                <section class="weather-card alerts-card glass-panel" aria-labelledby="alerts-card-title">
+                    <h2 id="alerts-card-title" class="card-title">🚨 Government Alerts</h2>
+                    <div class="alerts-card-content" id="alerts-card-content">
+                        <p class="no-alerts">No active weather alerts</p>
+                    </div>
+                </section>
+
+                <!-- Hyperlocal Observations -->
+                <section class="weather-card observations-card glass-panel" aria-labelledby="observations-title">
+                    <h2 id="observations-title" class="card-title">Local Observations</h2>
+                    <div class="observations-content">
+                        <button class="add-observation-btn neumorphic-btn" aria-label="Add local weather observation">
+                            + Add Observation
+                        </button>
+                        <div class="observations-list" id="observations-list">
+                            <!-- Local observations will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <p class="loading-text">Loading weather data...</p>
+    </div>
+
+    <!-- Settings modal -->
+    <div class="modal-overlay" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title" style="display: none;">
+        <div class="modal-content glass-panel">
+            <header class="modal-header">
+                <h2 id="settings-title">Settings</h2>
+                <button class="modal-close" aria-label="Close settings">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="temp-unit">Temperature Unit</label>
+                    <select id="temp-unit" class="neumorphic-input">
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="wind-unit">Wind Speed Unit</label>
+                    <select id="wind-unit" class="neumorphic-input">
+                        <option value="kmh">km/h</option>
+                        <option value="mph">mph</option>
+                        <option value="ms">m/s</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="reduce-motion" class="neumorphic-checkbox">
+                        Reduce motion and animations
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="auto-refresh" class="neumorphic-checkbox" checked>
+                        Auto-refresh weather data
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add observation modal -->
+    <div class="modal-overlay" id="observation-modal" role="dialog" aria-modal="true" aria-labelledby="observation-title" style="display: none;">
+        <div class="modal-content glass-panel">
+            <header class="modal-header">
+                <h2 id="observation-title">Add Local Observation</h2>
+                <button class="modal-close" aria-label="Close observation form">&times;</button>
+            </header>
+            <form class="modal-body observation-form" id="observation-form">
+                <div class="form-group">
+                    <label for="obs-type">Observation Type</label>
+                    <select id="obs-type" class="neumorphic-input" required>
+                        <option value="">Select type...</option>
+                        <option value="rain">Rain/Precipitation</option>
+                        <option value="clouds">Cloud Cover</option>
+                        <option value="wind">Wind Conditions</option>
+                        <option value="temperature">Temperature</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="obs-description">Description</label>
+                    <textarea id="obs-description" class="neumorphic-input" placeholder="Describe what you're observing..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="obs-intensity">Intensity (1-5)</label>
+                    <input type="range" id="obs-intensity" class="neumorphic-range" min="1" max="5" value="3">
+                    <span class="range-value" id="intensity-value">3</span>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancel-observation">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Observation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
