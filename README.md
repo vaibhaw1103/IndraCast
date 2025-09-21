@@ -1,6 +1,6 @@
-# WeatherSync - Advanced Weather Dashboard
+# IndraCast - Advanced Weather Dashboard
 
-![WeatherSync Logo](data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛅</text></svg>)
+![IndraCast Logo](data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛅</text></svg>)
 
 A modern, accessible weather application with ensemble forecasting, hyperlocal observations, and government alerts. Built with vanilla HTML, CSS, and JavaScript using cutting-edge web technologies.
 
@@ -345,4 +345,4 @@ For questions, issues, or suggestions:
 
 ---
 
-**WeatherSync** - Making weather data beautiful, accessible, and actionable for everyone. 🌈
+**IndraCast** - Making weather data beautiful, accessible, and actionable for everyone. 🌈

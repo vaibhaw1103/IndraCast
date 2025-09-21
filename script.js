@@ -1,5 +1,5 @@
 /**
- * WeatherSync - Advanced Weather Dashboard
+ * IndraCast - Advanced Weather Dashboard
  * Modern weather app with ensemble forecasting, accessibility features, and hyperlocal observations
  */
 
@@ -24,7 +24,7 @@ class WeatherApp {
      * Initialize the weather application
      */
     async init() {
-        console.log('Initializing WeatherSync...');
+        console.log('Initializing IndraCast...');
 
         // Load saved settings
         this.loadSettings();
@@ -44,7 +44,7 @@ class WeatherApp {
         // Try to get user's location and load weather data
         await this.initializeLocation();
 
-        console.log('WeatherSync initialized successfully');
+        console.log('IndraCast initialized successfully');
     }
 
     /**

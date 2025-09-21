@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Modern weather app with ensemble forecasting, hyperlocal reports, and government alerts">
-    <title>WeatherSync - Advanced Weather Dashboard</title>
+    <title>IndraCast - Advanced Weather Dashboard</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
     
     <!-- Preconnect to external APIs for better performance -->
     <link rel="preconnect" href="https://api.openweathermap.org">
@@ -26,7 +35,7 @@
         <div class="container">
             <h1 class="logo">
                 <span class="logo-icon" aria-hidden="true">⛅</span>
-                WeatherSync
+                IndraCast
             </h1>
             
             <!-- Location search -->
